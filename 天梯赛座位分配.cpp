@@ -1,3 +1,4 @@
+//
 #include<stdio.h>
 #define A 100
 int main()
