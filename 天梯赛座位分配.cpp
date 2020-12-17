@@ -3,69 +3,70 @@
 int main()
 {
    int nowschool=0,nowfleet=0,nowpeople=0;
-   int num;
+   int num=1;;
    int i,j,k;
    int arr[A][A][10]={0};
    int allschoolcouont;
    int fleetcount[A];
-   int all=0;//×ÜÈËÊı
+   int all=0;//æ€»äººæ•°
    int maxfleet=0;
+   int maxcount=0;
+   int count;
+   int havefleet[100]={0};//ç”¨æ¥è®°å½•é˜Ÿä¼æ•°ä¸ºiçš„å­¦æ ¡æœ‰å‡ ä¸ªã€‚
 	scanf("%d",&allschoolcouont);
-	
 for(i=0;i<allschoolcouont;i++)
 {
-
-scanf("%d",&fleetcount[i]);//¼ÇÂ¼Ã¿¸öÑ§Ğ£ÓĞ¶àÉÙÖ§¶ÓÎé
+scanf("%d",&fleetcount[i]);//è®°å½•æ¯ä¸ªå­¦æ ¡æœ‰å¤šå°‘æ”¯é˜Ÿä¼
 all+=fleetcount[i]*10;
-if(fleetcount[i]>=maxfleet)
-maxfleet=fleetcount[i];
 }
 
-////////////////////////////////////////////////////////
-for(num=1;num<=all+10;num++)//¿ØÖÆµ±Ç°ĞòºÅ
+for(i=0;i<allschoolcouont;i++)
 {
-//getchar();
-
-///////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-if(num!=1&&0==nowschool%allschoolcouont)//½áÊøµ±Ç°ËùÓĞÑ§Ğ£
+for(j=0;j<fleetcount[i];j++)
 {
-nowpeople++;
-nowpeople%=10;
-}
-if(num!=1&&0==nowpeople%10&&0==nowschool)//½áÊøµ±Ç°ËùÓĞ¶ÓÎé
-{
-nowfleet++;
+havefleet[j]++;
+}//è®°å½•æ¯ä¸ªå­¦æ ¡æœ‰å¤šå°‘æ”¯é˜Ÿä¼
+
 }
 
 
+///////////////////////////ä»¥ä¸‹ä¸ºèµ‹å€¼/////////////////////////////
 
-
-	if(nowfleet<fleetcount[nowschool])
+for( i=0;i<allschoolcouont;i++)
+{
+	num=i+1;
+for(j=0;j<fleetcount[i];j++)
+{
+	count=0;
+	if(j!=0&&havefleet[j-1]!=1&&havefleet[j]!=1)
 	{
-		  if(nowfleet==maxfleet-1)
-	   num++;
-arr[nowschool][nowfleet][nowpeople]=num;
- 
+		
+		for(k=i+1;k<allschoolcouont;k++)
+		{
+		   if(j-1<=fleetcount[k]-1)
+			   count++;
+		}
+   		for(k=0;k<=i;k++)
+		{
+		   if(j<=fleetcount[k]-1)
+			   count++;
+		}
+	num=num+count;
 	}
-	else if(num!=1)//¼ÙÈçµ±Ç°Ñ§Ğ£Ã»ÓĞÕâ¸ö¶ÓÎé£¬num²»±ä£¬¼ÌĞøÕÒÏÂÒ»¸öÑ§Ğ£¡£
-	{
-	num--;
+	else if(j!=0)
+     num=num+2;
 
-	}
+   for(k=0;k<10;k++)
+   {
+    arr[i][j][k]=num;
+	if(havefleet[j]!=1&&k!=9)
+	num=num+havefleet[j];
+	else if(k!=9)
+     num=num+2;
+   }
 
 
-nowschool++;
-nowschool%=allschoolcouont;
-
-
-
-
-
+}
 }
 
 
@@ -76,7 +77,6 @@ nowschool%=allschoolcouont;
 
 
 
-//printf("nowschool%d nowfleet%d nowpeople%d num%d\n",nowschool,nowfleet,nowpeople,num);
 for( i=0;i<allschoolcouont;i++)
 {
 printf("#%d\n",i+1);
@@ -85,18 +85,9 @@ for(j=0;j<fleetcount[i];j++)
    for(k=0;k<10;k++)
    {
     printf("%d ",arr[i][j][k]);
-   
    }
    printf("\n");
-
 }
 }
-
-
-
-
-
-
-
-
 }
+
