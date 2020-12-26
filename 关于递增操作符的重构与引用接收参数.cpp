@@ -24,7 +24,7 @@ public:
 };
 ostream& operator<<(ostream& ct,  myint &p)
 //或者   ostream& operator<<(ostream& ct,  myint p)
-//这里注意，ostream& operator<<(ostream& ct, const &p)是不行的，因为myint++返回的是一个temp匿名变量，是一个“右值”，普通引用只能接收一个可修改的左值。
+//这里注意，ostream& operator<<(ostream& ct, myint &p)是不行的，因为myint++返回的是一个temp匿名变量，是一个“右值”，普通引用只能接收一个可修改的左值。
 {
 	ct << p.a << p.b << endl;
 	return ct;
