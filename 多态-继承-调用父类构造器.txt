@@ -1,0 +1,12 @@
+﻿“ConsoleApplication10.exe”(Win32): 已加载“C:\Users\SWQXDBA\source\repos\ConsoleApplication10\Debug\ConsoleApplication10.exe”。已加载符号。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\ntdll.dll”。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\kernel32.dll”。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\KernelBase.dll”。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\msvcp140d.dll”。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\vcruntime140d.dll”。
+“ConsoleApplication10.exe”(Win32): 已加载“C:\Windows\SysWOW64\ucrtbased.dll”。
+线程 0x35e4 已退出，返回值为 0 (0x0)。
+线程 0x281c 已退出，返回值为 -1073741510 (0xc000013a)。
+线程 0x3250 已退出，返回值为 -1073741510 (0xc000013a)。
+线程 0x3a34 已退出，返回值为 -1073741510 (0xc000013a)。
+程序“[8788] ConsoleApplication10.exe”已退出，返回值为 -1073741510 (0xc000013a)。
