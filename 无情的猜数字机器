@@ -1,0 +1,97 @@
+package com.company;
+
+
+import java.util.*;
+class prt{
+    void prt()
+    {
+        System.out.println(strs);
+
+    }
+    prt(String str)
+    {
+        strs = str;
+    }
+    String strs;
+
+}
+public class Main{
+    public static void main(String []args)
+    {
+        Scanner sc = new Scanner(System.in);
+        Random rad = new Random();
+
+        System.out.println("请输入要猜的数字最大是多少");
+        int numberis = sc.nextInt();
+       // System.out.println("这个数字是"+rad);
+        System.out.println("请输入要猜的次数,以统计平均要猜几次");
+        int alltime = sc.nextInt();
+        int nowtime=0;
+        int pinjunci=0;
+        while (nowtime<alltime) {
+            nowtime++;
+            int number = rad.nextInt(numberis);
+            System.out.println("随机数已生成");
+            int now = numberis , next = numberis, last = 0;
+            int flag = 0;
+            int time = 0;
+            System.out.printf("猜的是%d\n", now);
+            while (true) {
+
+                if (flag == 1) {
+                    next = now;
+
+                } else if (flag == 2) {
+                    last = now;
+                }
+                now = (next + last) / 2;
+
+                int i = now;
+                if (i > number) {
+                    flag = 1;
+                    System.out.println("大了");
+                } else if (i < number) {
+                    flag = 2;
+                    System.out.println("小了");
+                } else if (i == number) {
+                    System.out.printf("猜的是%d\n", now);
+                    System.out.println("对了！一共猜了" + time + "次\n" + "答案是" + number);
+
+                    break;
+                }
+                System.out.printf("猜的是%d\n", now);
+                time++;
+            }
+            pinjunci+=time;
+        }
+        System.out.println("平均猜了"+pinjunci/alltime);
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
