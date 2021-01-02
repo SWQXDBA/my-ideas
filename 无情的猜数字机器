@@ -1,20 +1,6 @@
 package com.company;
-
-
 import java.util.*;
-class prt{
-    void prt()
-    {
-        System.out.println(strs);
 
-    }
-    prt(String str)
-    {
-        strs = str;
-    }
-    String strs;
-
-}
 public class Main{
     public static void main(String []args)
     {
