@@ -1,0 +1,54 @@
+package   com.company;
+import java.util.*;
+public  class Main{
+    static class money implements Cloneable{
+        int moneys=50;
+
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+    }
+     static class person implements Cloneable{
+            money mys= new money();
+            String name="xiaoming";
+
+         @Override
+         protected Object clone() throws CloneNotSupportedException {
+             person newp = (person)super.clone();
+             newp.mys= (money) this.mys.clone();
+             return newp;
+         }
+     }
+    public static void main(String [] args) throws CloneNotSupportedException
+    {
+          person ps1 = new person();
+          person ps2 = (person)ps1.clone();
+        System.out.println(ps1.name);
+        System.out.println(ps2.name);
+        System.out.println("changing name");
+        ps2.name="li";
+        System.out.println(ps1.name);
+        System.out.println(ps2.name);
+        System.out.println(ps1.mys.moneys);
+        System.out.println(ps2.mys.moneys);
+
+
+        System.out.println("changing money");
+        ps2.mys.moneys=20;
+
+        System.out.println(ps1.mys.moneys);
+        System.out.println(ps2.mys.moneys);
+
+
+
+
+
+
+
+
+
+
+    }
+
+}
