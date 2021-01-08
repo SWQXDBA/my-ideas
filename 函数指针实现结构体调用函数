@@ -1,0 +1,26 @@
+#include <cstdio>
+#include <cstdlib>
+struct test{
+int (*pt)();
+    int a;
+};
+int set(struct test *p,int num)
+{
+	p->a=num;
+}
+int get(struct test *p)
+{
+	return p->a;
+}
+
+int main() {
+    struct test test1={0};
+ int i=0;
+   test1.pt=set;
+   test1.pt(&test1,52);
+   test1.pt=get;
+   i=(int)test1.pt(&test1);
+   printf("%d ",i);
+
+    return 0;
+}
