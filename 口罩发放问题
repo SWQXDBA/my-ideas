@@ -1,0 +1,147 @@
+#include <cstdio>
+#include <cstring>
+struct person
+{
+    int data;
+    char name[10];
+    char idcard[20];
+    int ifFine;
+    int hourtime;
+    int mintime;
+    int lastApplyDay;
+    int ifThisDayData;
+
+};
+void copy(struct person *A,struct person *B)
+{
+    A->data=B->data;
+    strcpy(A->idcard,B->idcard);
+    strcpy(A->name,B->name);
+    A->ifFine=B->ifFine;
+    A->hourtime=B->hourtime;
+    A->mintime=B->mintime;
+    A->lastApplyDay=B->lastApplyDay;
+    A->ifThisDayData=B->ifThisDayData;
+
+}
+int ifSmaller(struct person A,struct person B)
+{
+   if(A.hourtime<B.hourtime)
+       return 1;
+   else if(A.hourtime>B.hourtime)
+       return 0;
+   else if (A.mintime<B.mintime)
+       return 1;
+   else if(A.mintime==B.mintime)
+       return -1;
+       return 0;
+}
+int ifIdCardTrue(char test[])
+{
+    if(strlen(test)!=18)
+        return 0;
+    for(int i=0;i<18;i++)
+        if(test[i]<'0'||test[i]>'9')
+            return 0;
+        return 1;
+
+}
+int main()
+{
+         struct person arr[1000]={0};
+         struct person tempperson={0};
+         int allPersonCount=0;
+         int Day,Perday;
+         scanf("%d%d",&Day,&Perday);
+         for(int i=1;i<=Day;i++) {
+             int ifIsNewPerson = 1;
+             int personCount, canOfferCount;
+             int OfferedCount = 0;
+             int thisis=1;
+             scanf("%d%d", &personCount, &canOfferCount);
+             for (int j = 0; j < personCount; j++) {
+                 ifIsNewPerson = 1;
+                 scanf("%s", &tempperson.name);
+                 scanf("%s", &tempperson.idcard);
+                 scanf("%d", &tempperson.ifFine);
+                 scanf("%d:%d", &tempperson.hourtime, &tempperson.mintime);
+                 if (!ifIdCardTrue(tempperson.idcard))
+                     continue;
+                 for (int k = 0; k < allPersonCount; k++) {
+                     if (strcmp(tempperson.name,arr[k].name) == 0 ) {
+                         arr[k].data=thisis++;
+                         arr[k].hourtime = tempperson.hourtime;
+                         arr[k].mintime = tempperson.mintime;
+                         if(arr[k].ifFine ==0)
+                             arr[k].ifFine = tempperson.ifFine;
+                         arr[k].ifThisDayData = 1;
+                         ifIsNewPerson = 0;
+                     }
+                 }
+                 if (ifIsNewPerson == 1) {
+                     strcpy(arr[allPersonCount].name,tempperson.name);
+                     strcpy(arr[allPersonCount].idcard,tempperson.idcard);
+                     arr[allPersonCount].data=thisis++;
+                     arr[allPersonCount].ifFine = tempperson.ifFine;
+                     arr[allPersonCount].hourtime = tempperson.hourtime;
+                     arr[allPersonCount].mintime = tempperson.mintime;
+                     arr[allPersonCount].ifThisDayData = 1;
+                     allPersonCount++;
+                 }
+             }
+             for (int n = 0; n < allPersonCount - 1; n++) {
+                 if (arr[n].ifThisDayData == 1) {
+                     for (int m = n + 1; m < allPersonCount; m++) {
+                         if (arr[m].ifThisDayData == 1) {
+                             if (0==ifSmaller(arr[n], arr[m])) {
+
+                                 struct person tempperson;
+                                 copy(&tempperson, &arr[n]);
+                                 copy(&arr[n], &arr[m]);
+                                 copy(&arr[m], &tempperson);
+                             }
+                         }
+                     }
+
+                 }
+             }
+             for (int n = 0; n < allPersonCount - 1; n++) {
+                 if (arr[n].ifThisDayData == 1) {
+                     for (int m = n + 1; m < allPersonCount; m++) {
+                         if (arr[m].ifThisDayData == 1) {
+                             if (-1==ifSmaller(arr[n], arr[m])&&arr[n].data>arr[m].data) {
+                                // printf("TEST::%s %s,%d %d\n", arr[n].name, arr[m].name,arr[n].data,arr[m].data);
+                                 struct person tempperson;
+                                 copy(&tempperson, &arr[n]);
+                                 copy(&arr[n], &arr[m]);
+                                 copy(&arr[m], &tempperson);
+                             }
+                         }
+                     }
+
+                 }
+             }
+                 for (int n = 0; n < allPersonCount; n++) {
+                     if (arr[n].ifThisDayData == 1 && OfferedCount <= canOfferCount&&(((i-arr[n].lastApplyDay)>=Perday)||arr[n].lastApplyDay==0)) {
+                        // printf("%s %s,%d:%d\n", arr[n].name, arr[n].idcard,arr[n].hourtime,arr[n].mintime);
+                         printf("%s %s\n", arr[n].name, arr[n].idcard);
+                         arr[n].lastApplyDay = i;
+                       //  printf("%d \n",arr[n].lastApplyDay);
+                         OfferedCount++;
+                     }
+                     if (OfferedCount == canOfferCount)
+                         break;
+                 }
+                 for (int n = 0; n < allPersonCount; n++)
+                 {
+                     arr[n].ifThisDayData = 0;
+                     arr[n].data= 0;
+                 }
+             }
+       for (int n = 0; n < allPersonCount; n++){
+                if(arr[n].ifFine==1)
+                printf("%s %s\n", arr[n].name, arr[n].idcard);
+       }
+}
+
+
