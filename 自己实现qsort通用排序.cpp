@@ -51,12 +51,12 @@ int main()
 		printf("name %s,age %d\n", students[i].name, students[i].age);
 	}
 	myqsort(students, sizeof(student), 4, compareage);
-	puts("½øĞĞÄêÁäÅÅĞò");
+	puts("è¿›è¡Œå¹´é¾„æ’åº");
 	for (int i = 0; i < 4; i++)
 	{
 		printf("name %s,age %d\n", students[i].name, students[i].age);
 	}
-	puts("½øĞĞĞÕÃûÅÅĞò");
+	puts("è¿›è¡Œå§“åæ’åº");
 	myqsort(students, sizeof(student), 4, comparename);
 	for (int i = 0; i < 4; i++)
 	{
