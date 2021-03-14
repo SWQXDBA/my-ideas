@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<string.h>
+#include <cstdlib>
+
 #define name_max 15
 #define sex_max 15
 #define number_max 15
@@ -7,47 +9,52 @@
 void inputtel(struct teles *ps);
 void delet(struct teles *ps);
 void srch(struct teles *ps);
-void printtel(struct teles *ps,int n);//´òÓ¡µ¥¸öÈËµÄÊı¾İ
-void showtel(struct teles *ps);//´òÓ¡ËùÓĞĞÅÏ¢
-void modtel(struct teles *ps);//ĞŞ¸Ä
-void savetel(struct teles *ps);//±£´æµ½txtÎÄ¼ş
+void printtel(struct teles *ps,int n);//æ‰“å°å•ä¸ªäººçš„æ•°æ®
+void showtel(struct teles *ps);//æ‰“å°æ‰€æœ‰ä¿¡æ¯
+void modtel(struct teles *ps);//ä¿®æ”¹
+void savetel(struct teles *ps);//ä¿å­˜åˆ°txtæ–‡ä»¶
 int option(struct teles *ps);
+void load(struct teles *ps);
+void expand(teles *pTeles);
+
 struct telephone
 {
-	char name[name_max];
-	int age;
-	char sex[sex_max];
-	char number[number_max];
-	char address[address_max];
+    char name[name_max];
+    int age;
+    char sex[sex_max];
+    char number[number_max];
+    char address[address_max];
 
 };
 struct teles
 {
-struct telephone tele[1000];
-int telesize;
+    struct telephone *tele = (struct telephone* ) malloc(sizeof(struct telephone)*1);
+    int telesize;
+    int maxLength= 1;
 };
 enum
 {
-   add=1,
-   del,
-   search,
-   modify,
-   show,
-   save,
-   exit
+    add=1,
+    del,
+    search,
+    modify,
+    show,
+    save,
+    ex
 };
 int main()
 {
-	struct teles tpne={0};
+    struct teles tpne;
     struct teles *ps=&tpne;
-	ps->telesize=0;
-	while(option(ps))
-	{
-		getchar();
-	}
+    ps->telesize=0;
+    load(ps);
+    while(option(ps))
+    {
+        getchar();
+    }
 
 
-return 0;
+    return 0;
 }
 
 
@@ -59,78 +66,96 @@ return 0;
 
 void inputtel(struct teles *ps)
 {
-	int n=ps->telesize;
-struct telephone *ps2=&ps->tele[n];
-	puts("ÇëÊäÈëÃû×Ö£º");
+    if(ps->telesize==ps->maxLength){
+        expand(ps);
+    }
+    int n=ps->telesize;
+    struct telephone *ps2=&ps->tele[n];
+    puts("è¯·è¾“å…¥åå­—ï¼š");
 
     scanf("%s",&ps2->name);
-	puts("ÇëÊäÈëÄêÁä£º");
+    puts("è¯·è¾“å…¥å¹´é¾„ï¼š");
     scanf("%d",&ps2->age);
-	puts("ÇëÊäÈëĞÔ±ğ£º");
+    puts("è¯·è¾“å…¥æ€§åˆ«ï¼š");
     scanf("%s",&ps2->sex);
-	puts("ÇëÊäÈëµç»°ºÅÂë£º");
-	
+    puts("è¯·è¾“å…¥ç”µè¯å·ç ï¼š");
+
     scanf("%s",&ps2->number);
-	puts("ÇëÊäÈëµØÖ·£º");
+    puts("è¯·è¾“å…¥åœ°å€ï¼š");
 
     scanf("%s",&ps2->address);
     ps->telesize++;
 }
+
+void expand(teles *ps) {
+    printf("è§¦å‘æ‰©å®¹\n");
+    telephone * temp = (telephone *)realloc(ps->tele,ps->maxLength*2*sizeof(telephone));
+    if(temp!=NULL){
+        ps->tele=temp;
+        ps->maxLength*=2;
+    }else{
+        printf("æ‰©å®¹å¤±è´¥ï¼ç¨‹åºç»“æŸ");
+        return;
+    }
+
+
+}
+
 void delet(struct teles *ps)
 {
-	int flag=0;
-	struct telephone *ps2;
-	char name[name_max]={0};
-	printf("ÇëÊäÈëÒªÉ¾³ıµÄÃû×Ö£º\n");
-	scanf("%s",name);
+    int flag=0;
+    struct telephone *ps2;
+    char name[name_max]={0};
+    printf("è¯·è¾“å…¥è¦åˆ é™¤çš„åå­—ï¼š\n");
+    scanf("%s",name);
 
-for(int n=0;n<ps->telesize;n++)
-{
-	   ps2=&ps->tele[n];
-     if(0==strcmp(ps2->name,name))
-	 {
-		 flag=1;
-	   for(int i=n;i<ps->telesize;i++)
-	   {
-	   ps->tele[i]=ps->tele[i+1];
-	   }
-	 }
-}
-ps->telesize--;
+    for(int n=0;n<ps->telesize;n++)
+    {
+        ps2=&ps->tele[n];
+        if(0==strcmp(ps2->name,name))
+        {
+            flag=1;
+            for(int i=n;i<ps->telesize;i++)
+            {
+                ps->tele[i]=ps->tele[i+1];
+            }
+        }
+    }
+    ps->telesize--;
 
-if(flag==0)
-printf("Î´²éÑ¯µ½Ö¸¶¨µÄÃû³Æ,É¾³ıÊ§°Ü£¡\n");
+    if(flag==0)
+        printf("æœªæŸ¥è¯¢åˆ°æŒ‡å®šçš„åç§°,åˆ é™¤å¤±è´¥ï¼\n");
 }
 
 
 
 void srch(struct teles *ps)
 {
-	int flag=0;
-struct telephone *ps2;
-	char name[name_max]={0};
-	printf("ÇëÊäÈëÒª²éÕÒµÄÃû×Ö£º\n");
-	scanf("%s",name);
-for(int n=0;n<ps->telesize;n++)
-{
-	   ps2=&ps->tele[n];
-     if(0==strcmp(ps2->name,name))
-	 {
-       printf("Ãû×Ö£º\tÄêÁä£º\tĞÔ±ğ£º\tµç»°£º\t\tµØÖ·£º\t\n");
-	   printtel(ps,n);
-	   flag=1;  
-	 }
-}
-if(flag==0)
-printf("Î´²éÑ¯µ½Ö¸¶¨µÄÃû³Æ\n");
+    int flag=0;
+    struct telephone *ps2;
+    char name[name_max]={0};
+    printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„åå­—ï¼š\n");
+    scanf("%s",name);
+    for(int n=0;n<ps->telesize;n++)
+    {
+        ps2=&ps->tele[n];
+        if(0==strcmp(ps2->name,name))
+        {
+            printf("åå­—ï¼š\tå¹´é¾„ï¼š\tæ€§åˆ«ï¼š\tç”µè¯ï¼š\t\tåœ°å€ï¼š\t\n");
+            printtel(ps,n);
+            flag=1;
+        }
+    }
+    if(flag==0)
+        printf("æœªæŸ¥è¯¢åˆ°æŒ‡å®šçš„åç§°\n");
 }
 
 
 
 void printtel(struct teles *ps,int n)
 {
-	struct telephone *ps2=&ps->tele[n];
-	printf("%-s\t%-d\t%-s%\t%-s\t\t%-s\t\n",ps2->name,ps2->age,ps2->sex,ps2->number,ps2->address);
+    struct telephone *ps2=&ps->tele[n];
+    printf("%-s\t%-d\t%-s%\t%-s\t\t%-s\t\n",ps2->name,ps2->age,ps2->sex,ps2->number,ps2->address);
 
 }
 
@@ -138,11 +163,12 @@ void printtel(struct teles *ps,int n)
 
 void showtel(struct teles *ps)
 {
-printf("Ãû×Ö£º\tÄêÁä£º\tĞÔ±ğ£º\tµç»°£º\t\tµØÖ·£º\t\n");
-for(int i=0;i<ps->telesize;i++)
-{
-printtel(ps,i);
-}
+    printf("åå­—ï¼š\tå¹´é¾„ï¼š\tæ€§åˆ«ï¼š\tç”µè¯ï¼š\t\tåœ°å€ï¼š\t\n");
+    for(int i=0;i<ps->telesize;i++)
+    {
+        printtel(ps,i);
+    }
+    printf("max = %d size = %d\n",ps->maxLength,ps->telesize);
 }
 
 
@@ -150,95 +176,98 @@ printtel(ps,i);
 void modtel(struct teles *ps)
 {
 
-	int flag=0;
-struct telephone *ps2;
-	char name[name_max]={0};
-	 printf("ÇëÊäÈëÒªĞŞ¸ÄµÄÈËÃûĞÅÏ¢\n");
-	scanf("%s",name);
-for(int n=0;n<ps->telesize;n++)
-{
-	   ps2=&ps->tele[n];
-     if(0==strcmp(ps2->name,name))
-	 {
-	printf("ÒÑ²éÑ¯µ½Ä¿±ê£¬ÇëÊäÈëĞÂµÄĞÅÏ¢\n");
-	  printf("Ãû×Ö£º\tÄêÁä£º\tĞÔ±ğ£º\tµç»°£º\t\tµØÖ·£º\t\n");
-	 printtel(ps,n);
-	 	printf("ÇëÊäÈëĞÂµÄĞÅÏ¢\n");
+    int flag=0;
+    struct telephone *ps2;
+    char name[name_max]={0};
+    printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„äººåä¿¡æ¯\n");
+    scanf("%s",name);
+    for(int n=0;n<ps->telesize;n++)
+    {
+        ps2=&ps->tele[n];
+        if(0==strcmp(ps2->name,name))
+        {
+            printf("å·²æŸ¥è¯¢åˆ°ç›®æ ‡ï¼Œè¯·è¾“å…¥æ–°çš„ä¿¡æ¯\n");
+            printf("åå­—ï¼š\tå¹´é¾„ï¼š\tæ€§åˆ«ï¼š\tç”µè¯ï¼š\t\tåœ°å€ï¼š\t\n");
+            printtel(ps,n);
+            printf("è¯·è¾“å…¥æ–°çš„ä¿¡æ¯\n");
 
-	puts("ÇëÊäÈëÃû×Ö£º");
-    scanf("%s",&ps2->name);
-	puts("ÇëÊäÈëÄêÁä£º");
-    scanf("%d",&ps2->age);
-	puts("ÇëÊäÈëĞÔ±ğ£º");
-    scanf("%s",&ps2->sex);
-	puts("ÇëÊäÈëµç»°ºÅÂë£º");
-    scanf("%s",&ps2->number);
-	puts("ÇëÊäÈëµØÖ·£º");
-    scanf("%s",&ps2->address);
+            puts("è¯·è¾“å…¥åå­—ï¼š");
+            scanf("%s",&ps2->name);
+            puts("è¯·è¾“å…¥å¹´é¾„ï¼š");
+            scanf("%d",&ps2->age);
+            puts("è¯·è¾“å…¥æ€§åˆ«ï¼š");
+            scanf("%s",&ps2->sex);
+            puts("è¯·è¾“å…¥ç”µè¯å·ç ï¼š");
+            scanf("%s",&ps2->number);
+            puts("è¯·è¾“å…¥åœ°å€ï¼š");
+            scanf("%s",&ps2->address);
 
-	   flag=1;  
-	 }
-}
-if(flag==0)
+            flag=1;
+        }
+    }
+    if(flag==0)
 
 
-printf("Î´²éÑ¯µ½Ö¸¶¨µÄÃû³Æ\n");
+        printf("æœªæŸ¥è¯¢åˆ°æŒ‡å®šçš„åç§°\n");
 }
 
 void savetel(struct teles *ps)
 {
-	struct telephone *ps2;
-	FILE *FP1;
-	char name[name_max];
-printf("ÇëÊäÈë±£´æµÄÎÄ¼şÃû\n");
-	scanf("%s",name);
-FP1=fopen(name,"w");
-if(FP1!=NULL)
-{
-fprintf(FP1,"Ãû×Ö£º\tÄêÁä£º\tĞÔ±ğ£º\tµç»°£º\t\tµØÖ·£º\t\n");
-for(int i=0;i<ps->telesize;i++)
-{
-	ps2=&ps->tele[i];
-	fprintf(FP1,"%-s\t%-d\t%-s%\t%-s\t\t%-s\t\n",ps2->name,ps2->age,ps2->sex,ps2->number,ps2->address);
-}
-printf("±£´æÍê³É\n");
-}
-else printf("error,ÎŞ·¨´´½¨ÎÄ¼ş£¡£¡£¡\n");
+    struct telephone *ps2;
+    FILE *FP1;
+    char name[name_max] = "DATA.txt";
+    //printf("è¯·è¾“å…¥ä¿å­˜çš„æ–‡ä»¶å\n");
+   // scanf("%s",name);
+    FP1=fopen(name,"w");
+    if(FP1!=NULL)
+    {
+       // fprintf(FP1,"åå­—ï¼š\tå¹´é¾„ï¼š\tæ€§åˆ«ï¼š\tç”µè¯ï¼š\t\tåœ°å€ï¼š\t\n");
+        for(int i=0;i<ps->telesize;i++)
+        {
+            ps2=&ps->tele[i];
+            fprintf(FP1,"%s %d %s %s %s",ps2->name,ps2->age,ps2->sex,ps2->number,ps2->address);
+        }
+        printf("ä¿å­˜å®Œæˆ\n");
+    }
+    else printf("error,æ— æ³•åˆ›å»ºæ–‡ä»¶ï¼ï¼ï¼\n");
 
 }
+void load(struct teles *ps){
+    FILE *FP1;
+    char name[name_max] = "DATA.txt";
+    FP1 = fopen(name,"r");
+    struct telephone ps2;
+    if(FP1!=NULL){
+        while(fscanf(FP1,"%s %d %s %s %s",&ps2.name,&ps2.age,&ps2.sex,&ps2.number,&ps2.address)!=EOF){
+            (ps->tele[ps->telesize])=ps2;
+            ps->telesize++;
+        }
 
+    }else printf("æœªæ‰¾åˆ°æ–‡ä»¶");
+}
 int option(struct teles *ps)
 {
-	int n;
-printf("ÇëÊäÈë²Ù×÷£º\n");
-printf("1:add     2:del   3:search\n"
-	   "4:modify  5:show  6:save\n"
-	   "7:exit\n");
-scanf("%d",&n);
-switch(n)
-{
-case add: inputtel(ps);break;
-case del: delet(ps);break;
-case search: srch(ps);break;
-case modify: modtel(ps);break;
-case show: showtel(ps);break;
-case save: savetel(ps);break;
-case exit: return 0;break;
-default:printf("ÊäÈëÑ¡ÏîÓĞÎó£¬ÇëÖØÊä\n");break;
+    int n;
+
+    printf("è¯·è¾“å…¥æ“ä½œï¼š\n");
+    printf("1:add     2:del   3:search\n"
+           "4:modify  5:show  6:save\n"
+           "7:exit\n");
+    scanf("%d",&n);
+    switch(n)
+    {
+        case add: inputtel(ps);break;
+        case del: delet(ps);break;
+        case search: srch(ps);break;
+        case modify: modtel(ps);break;
+        case show: showtel(ps);break;
+        case save: savetel(ps);break;
+        case ex: return 0;break;
+        default:printf("è¾“å…¥é€‰é¡¹æœ‰è¯¯ï¼Œè¯·é‡è¾“\n");break;
+    }
+    return 1;
 }
-return 1;
-}
-/*
-1
-name1
-15
-nan
-1512341251231
-add1
-1
-name2
-17
-nv
-141231222
-add2
-*/
+
+
+
+
